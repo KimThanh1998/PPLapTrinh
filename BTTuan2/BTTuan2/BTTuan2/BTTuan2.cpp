@@ -34,6 +34,7 @@ void inputAdamEva(char* &cardsAdam, char* &cardsEva, char* cardsTemp, int N) {
 struct Card {
 	int ID;
 	int Prio = 0;
+	int Check = 0;
 };
 
 Card convertCards(char* cards, int N, Card* &cardsR) {
@@ -90,16 +91,34 @@ Card convertCards(char* cards, int N, Card* &cardsR) {
 	return *cardsR;
 }
 
+//Kiem tra diem va sap xep
 int Point(Card* A, Card* B, int N) {
 	int count = 0;
 	for (int i = 0; i < N; i++) {
-		if (B[i].ID > A[i].ID) {
-			count++;
-		}
-		else if (B[i].ID == A[i].ID) {
-			if (B[i].Prio > A[i].Prio) {
-				count++;
+		int max = 0;
+		int IDTemp = 0;
+		for (int j = 0; j < N; j++) {
+			if (A[j].Check == 0) {
+				if (A[j].ID > max && A[j].ID < B[i].ID) {
+					max = A[j].ID;
+					IDTemp = j;
+				}
+				else if (A[j].ID > max && A[j].ID == B[i].ID) {
+					if (B[i].Prio > A[i].Prio) {
+						max = A[j].ID;
+						IDTemp = j;
+					}
+				}
 			}
+		}
+		if (max != 0) {
+			A[IDTemp].Check = 1;
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		if (A[i].Check == 1)
+		{
+			count++;
 		}
 	}
 	return count;
@@ -124,31 +143,43 @@ void outputPrio(Card* cards, int N) {
 }
 
 int main() {
-	int N = 0;
-	cout << "Input number of cards: " << endl;
-	cin >> N;
+	int BT = 0;
+	cout << "Nhap so lan can thuc hien: " << endl;
+	cin >> BT;
+	int* resultFinal = new int[BT];
+	int temp = 0;
+	for (int i = 0; i < BT; i++) {
+		int N = 0;
+		cout << "Input number of cards: " << endl;
+		cin >> N;
 
-	char* CardsTemp = new char[N*4];
-	inputCards(CardsTemp, N);
+		char* CardsTemp = new char[N * 4];
+		inputCards(CardsTemp, N);
 
-	char* CardsAdam = new char[N * 2];
-	char* CardsEva = new char[N * 2];
-	inputAdamEva(CardsAdam, CardsEva, CardsTemp, N);
+		char* CardsAdam = new char[N * 2];
+		char* CardsEva = new char[N * 2];
+		inputAdamEva(CardsAdam, CardsEva, CardsTemp, N);
 
-	Card* cardsAdam = new Card[N];
-	convertCards(CardsAdam, N * 4, cardsAdam);
+		Card* cardsAdam = new Card[N];
+		convertCards(CardsAdam, N * 4, cardsAdam);
 
-	Card* cardsEva = new Card[N];
-	convertCards(CardsEva, N * 4, cardsEva);
+		Card* cardsEva = new Card[N];
+		convertCards(CardsEva, N * 4, cardsEva);
 
-	int result = Point(cardsAdam, cardsEva, N);
-	cout << "Eva's Point is: " << result << endl;
-	/*outputChar(CardsAdam, N * 2);
-	cout << endl;
-	outputChar(CardsEva, N * 2);
-	cout << endl;
-	outputPrio(cardsAdam, N);
-	cout << endl;
-	outputPrio(cardsEva, N);*/
+		int result = Point(cardsAdam, cardsEva, N);
+		resultFinal[temp] = result;
+		temp++;
+		//cout << "Eva's Point is: " << result << endl;
+		/*outputChar(CardsAdam, N * 2);
+		cout << endl;
+		outputChar(CardsEva, N * 2);
+		cout << endl;
+		outputPrio(cardsAdam, N);
+		cout << endl;
+		outputPrio(cardsEva, N);*/
+	}
+	for (int i = 0; i < BT; i++) {
+		cout << resultFinal[i] << endl;
+	}
 	return 0;
 }
