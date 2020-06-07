@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 int input(int M) {
@@ -31,12 +32,14 @@ void inputAdamEva(char* &cardsAdam, char* &cardsEva, char* cardsTemp, int N) {
 	}
 }
 
+//Tao dinh dang nhan dien cho tung la bai (Danh dau bai cua Eva)
 struct Card {
 	int ID;
 	int Prio = 0;
 	int Check = 0;
 };
 
+//Chuyen chuoi Char sang kieu cau truc de de xu ly
 Card convertCards(char* cards, int N, Card* &cardsR) {
 	int j = 0;
 	int m = 0;
@@ -124,18 +127,21 @@ int Point(Card* A, Card* B, int N) {
 	return count;
 }
 
+//Kiem tra nhap
 void outputChar(char* cards, int N) {
 	for (int i = 0; i < N; i++) {
 		cout << cards[i];
 	}
 }
 
+//Kiem tra cau truc
 void outputID(Card* cards, int N) {
 	for (int i = 0; i < N; i++) {
 		cout << cards[i].ID;
 	}
 }
 
+//Kiem tra cau truc
 void outputPrio(Card* cards, int N) {
 	for (int i = 0; i < N; i++) {
 		cout << cards[i].Prio;
@@ -144,17 +150,25 @@ void outputPrio(Card* cards, int N) {
 
 int main() {
 	int BT = 0;
-	cout << "Nhap so lan can thuc hien: " << endl;
-	cin >> BT;
+
+	ifstream MyReadFile("Test.inp");
+
+	//cout << "Nhap so lan can thuc hien: " << endl;
+	MyReadFile >> BT;
+
 	int* resultFinal = new int[BT];
 	int temp = 0;
+
 	for (int i = 0; i < BT; i++) {
 		int N = 0;
-		cout << "Input number of cards: " << endl;
-		cin >> N;
+		//cout << "Input number of cards: " << endl;
+		MyReadFile >> N;
 
 		char* CardsTemp = new char[N * 4];
-		inputCards(CardsTemp, N);
+		//inputCards(CardsTemp, N);
+		for (int i = 0; i < N * 4; i++) {
+			MyReadFile >> CardsTemp[i];
+		}
 
 		char* CardsAdam = new char[N * 2];
 		char* CardsEva = new char[N * 2];
@@ -178,8 +192,16 @@ int main() {
 		cout << endl;
 		outputPrio(cardsEva, N);*/
 	}
+
+	MyReadFile.close();
+
+	ofstream MyFile("CARD.OUT");
+
 	for (int i = 0; i < BT; i++) {
-		cout << resultFinal[i] << endl;
+		MyFile << resultFinal[i] << endl;
 	}
+
+	MyFile.close();
+
 	return 0;
 }
