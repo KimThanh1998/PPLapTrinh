@@ -1,7 +1,9 @@
 //Pham Kim Thanh - 16521129
+//Please change the value of file "BOX.INP" to run the code properly
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -21,8 +23,10 @@ int main()
 
 	int *number = new int[12];
 
+	ifstream readFile("BOX.INP");
+
 	for (int i = 0; i < 6; i++) {
-		getline(cin, input);
+		getline(readFile, input);
 		while ((pos = input.find(" ")) > 0)
 		{
 			temp1 = input.substr(0, pos);
@@ -34,6 +38,10 @@ int main()
 		n += 2;
 	}
 
+	readFile.close();
+
+	ofstream writeFile("BOX.OUT");
+
 	for (int i = 0; i < 12; i++) {
 		int count = 0;
 		for (int j = 0; j < 12; j++) {
@@ -43,10 +51,10 @@ int main()
 		}
 		if (count < 4)
 		{
-			cout << "NO";
+			writeFile << "NO";
 			return 0;
 		}
 	}
-	cout << "YES";
+	writeFile << "YES";
 	return 0;
 }
