@@ -20,23 +20,44 @@ int operate(pilot* l, int n) {
 	int min1 = 0;
 	int min2 = 0;
 	int result = 0;
+	int temp1 = 0;
+	int temp2 = 0;
 	for (int i = 0; i < (n / 2); i++) {
 		for (int m = 0; m < n; m++) {
-			if (l[m].check != 1) {
-				min1 = l[i].assit;
-				min2 = l[i].main;
+			//Sau khi su dung min salary thuc hien gan lai gia tri min cho cac pilot chua check
+			if (l[m].check == 0) {
+				min1 = l[m].assit;
+				temp1 = m;
+				break;
 			}
 		}
+
+		//So sanh luong lai phu thap nhat: neu co gia tri thap hon check no khong thi check cai cu
 		for (int j = 0; j < n; j++) {
 			if (l[j].assit < min1 && l[j].check == 0) {
-				min1 = l[i].assit;
-				l[j].check = 1;
-			}
-			if (l[j].main < min2 && l[j].check == 0) {
-				min2 = l[i].main;
-				l[j].check = 1;
+				min1 = l[j].assit;
+				temp1 = j;
 			}
 		}
+		l[temp1].check = 1;
+
+		for (int m = 0; m < n; m++) {
+			//Sau khi su dung min salary thuc hien gan lai gia tri min cho cac pilot chua check
+			if (l[m].check == 0) {
+				min2 = l[m].main;
+				temp2 = m;
+				break;
+			}
+		}
+
+		//So sanh luong lai phu thap nhat: neu co gia tri thap hon check no khong thi check cai cu
+		for (int j = 0; j < n; j++) {
+			if (l[j].main < min2 && l[j].check == 0) {
+				min2 = l[j].main;
+				temp2 = j;
+			}
+		}
+		l[temp2].check = 1;
 		result += min1 + min2;
 	}
 	return result;
