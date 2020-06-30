@@ -23,15 +23,18 @@ int main()
 
 	int *number = new int[12];
 
+	//Doc file txt
 	ifstream readFile("BOX.INP");
 
 	for (int i = 0; i < 6; i++) {
 		getline(readFile, input);
 		while ((pos = input.find(" ")) > 0)
 		{
+			//Cat chuoi thanh 2 gia tri int va thuc hien xoa chuoi string dau tien + gan chuoi string dau tien
 			temp1 = input.substr(0, pos);
 			input.erase(0, pos + 1);
 		}
+		//Gan chuoi string thu 2 va thuc hien chuyen doi sang int
 		temp2 = input.substr(0);
 		number[n] = stoi(temp1);
 		number[n + 1] = stoi(temp2);
@@ -42,6 +45,7 @@ int main()
 
 	ofstream writeFile("BOX.OUT");
 
+	//Thuc hien dem so luong kich thuoc, neu kich thuoc lap lai dung 4 lan thi thao man yeu cau
 	for (int i = 0; i < 12; i++) {
 		int count = 0;
 		for (int j = 0; j < 12; j++) {
